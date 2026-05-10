@@ -22,11 +22,5 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="."
-            android:exported="false"
-            android:label="MainFragment"
-            android:theme="@style/Theme.MyApplication" />
     </application>
-
 </manifest>
