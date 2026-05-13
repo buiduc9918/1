@@ -35,10 +35,10 @@ public class AuthViewModel extends ViewModel {
     public MutableLiveData<Boolean> getOtpSent() {
         return _otpSent;
     }
-    void signInWithPhoneAuthCredential(String code) {
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(getVerificationId().toString(),code );
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+    void signInWithPhoneAuthCredential(String code,Activity activity) {
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(getVerificationId().getValue().toString(),code );
+        Utils.INSTANCE.getFirebaseAuthInstance().signInWithCredential(credential)
+                .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
