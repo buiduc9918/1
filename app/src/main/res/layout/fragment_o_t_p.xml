@@ -17,7 +17,7 @@
     <LinearLayout
         android:layout_below="@+id/toolbar"
         android:id="@+id/screen"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
         android:gravity="center"
@@ -27,12 +27,16 @@
             android:layout_width="150dp"
             android:layout_height="159dp"
             android:src="@drawable/outline_key_24" />
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="kiem tra OTP"
+            android:textSize="22dp" />
         <TextView
             android:id="@+id/view_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Khong chia se khoa cho nguoi khac"
+            android:text="+84999444555"
             android:layout_marginBottom="20dp"
             android:textSize="22dp" />
 
@@ -40,10 +44,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Nhap Key"
-            android:textSize="40dp" />
+            android:textSize="22dp" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/otp"
+            android:id="@+id/otp_number"
             style="@style/Widget.Material3.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

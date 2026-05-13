@@ -36,15 +36,11 @@ public class LoginFragment extends Fragment {
                     Toast.makeText(requireContext(), "Vui lòng nhập đúng số điện thoại", Toast.LENGTH_SHORT).show();
                 } else {
                     Bundle bundle = new Bundle();
-                    bundle.putString("so", number);
+                    bundle.putString("so", "+84" + number);
                     Navigation.findNavController(v).navigate(R.id.action_loginFragment2_to_OTPFragment2, bundle);
                 }
             }
         });
-
         return binding.getRoot();
     }
-//    // Chuyển sang OTPFragment khi nhấn nút trong onClick
-//                NavHostFragment.findNavController(LoginFragment.this)
-//            .navigate(R.id.action_loginFragment2_to_OTPFragment2);
 }
