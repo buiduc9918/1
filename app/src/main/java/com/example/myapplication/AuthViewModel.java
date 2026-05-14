@@ -1,9 +1,6 @@
 package com.example.myapplication;
 
-import static android.content.ContentValues.TAG;
-
 import android.app.Activity;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -13,9 +10,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -28,7 +22,14 @@ public class AuthViewModel extends ViewModel {
 
     private MutableLiveData<String> _verification = new MutableLiveData<>(null);
     private MutableLiveData<Boolean> _otpSent = new MutableLiveData<>(false);
+    private MutableLiveData<Boolean> _isSignin =  new MutableLiveData<>(false);
+
     public static final AuthViewModel INSTANCE = new AuthViewModel();
+
+    public MutableLiveData<Boolean> getisSignin() {
+        return _isSignin;
+    }
+
     public MutableLiveData<String> getVerificationId() {
         return _verification;
     }
@@ -42,7 +43,7 @@ public class AuthViewModel extends ViewModel {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                        } else {
+                            _isSignin.setValue(true);
                         }
                     }
                 });

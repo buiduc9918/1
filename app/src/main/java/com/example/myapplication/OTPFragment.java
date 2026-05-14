@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +36,17 @@ public class OTPFragment extends Fragment {
         Toast.makeText(requireContext(),"gui OTP....",Toast.LENGTH_SHORT).show();
         sendOTP();
         onLoginButtonClicked();
+        onBackPress();
+
+
         return blinding.getRoot();
+    }
+
+    private void onBackPress() {
+        blinding.toolbar.setNavigationOnClickListener(v -> {
+            NavHostFragment.findNavController(OTPFragment.this).navigate(R.id.action_OTPFragment2_to_loginFragment2);
+                }
+        );
     }
 
     private void onLoginButtonClicked() {
@@ -45,13 +57,23 @@ public class OTPFragment extends Fragment {
          }else {
              Toast.makeText(requireContext(),"Dang kiem tra OTP ",Toast.LENGTH_SHORT).show();
              verifyOTP(OTP);
-
          }
         });
 
     }
 
     private void verifyOTP(String otp) {
+        viewModel.signInWithPhoneAuthCredential(otp,requireActivity());
+        viewModel.getisSignin().observe(getViewLifecycleOwner(),isSingint->{
+                    if(isSingint){
+                        Toast.makeText(requireContext(),"Login Success",Toast.LENGTH_SHORT).show();
+                    //    NavHostFragment.findNavController(OTPFragment.this).navigate(R.id.action_OTPFragment2_to_loginFragment2);
+                    } else {
+                        Toast.makeText(requireContext(),"Login Failed",Toast.LENGTH_SHORT).show();
+
+                    }
+        }
+        );
     }
 
     private void getUserNumber() {

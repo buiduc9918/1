@@ -51,6 +51,8 @@ dependencies {
     implementation(libs.credentials)
     implementation(libs.credentials.play.services.auth)
     implementation(libs.firebase.auth)
+    implementation(platform("com.google.firebase:firebase-bom:34.13.0"))
+    //implementation("com.google.firebase:firebase-auth")
     implementation(libs.fragment)
     implementation(libs.googleid)
     implementation(libs.lifecycle.runtime.ktx)
@@ -68,4 +70,5 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.test.manifest)
     debugImplementation(libs.ui.tooling)
+
 }
