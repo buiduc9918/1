@@ -51,7 +51,8 @@ public class OTPFragment extends Fragment {
 
     private void onLoginButtonClicked() {
         blinding.btnTieptuc.setOnClickListener(v -> {
-         String OTP = blinding.otpNumber.toString();
+            String OTP = blinding.otpNumber.getEditText().getText().toString();
+
          if(OTP.length()!=6){
              Toast.makeText(requireContext(),"Otp khong co san",Toast.LENGTH_SHORT).show();
          }else {

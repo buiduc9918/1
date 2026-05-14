@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.credentials)
     implementation(libs.credentials.play.services.auth)
     implementation(libs.firebase.auth)
+    implementation(platform("com.google.firebase:firebase-bom:34.13.0"))
 
 
     implementation(libs.fragment)

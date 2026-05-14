@@ -29,7 +29,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Lấy text từ EditText bên trong TextInputLayout
-                String number = binding.userNumber.getEditText().getText().toString().trim();
+                String number = binding.userNumber.getEditText().getText().toString();
                 
                 // Kiểm tra số điện thoại (Ví dụ: phải đúng 10 số)
                 if (number.length() != 10) {
