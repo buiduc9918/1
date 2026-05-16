@@ -19,8 +19,8 @@ public SplashFragment() {
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater,
-            @Nullable ViewGroup container, // container id man hinh hien thi
-            @Nullable Bundle savedInstanceState
+          ViewGroup container, // container id man hinh hien thi
+             Bundle savedInstanceState
     ) {
         binding = FragmentSplashBinding.inflate(inflater, container, false);
         new Handler(Looper.getMainLooper()).postDelayed(() -> {

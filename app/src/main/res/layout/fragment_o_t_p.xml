@@ -19,7 +19,6 @@
         android:id="@+id/screen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:gravity="center"
         android:layout_gravity="center"
         android:orientation="vertical">
@@ -68,7 +67,7 @@
             android:id="@+id/btn_tieptuc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tiep"
+            android:text="TIEP TUC"
             android:textSize="20dp"
             android:layout_marginHorizontal="20dp"
             app:cornerRadius="17dp"

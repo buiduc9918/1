@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_OTPFragment2_to_loginFragment2"
             app:destination="@id/loginFragment2" />
+        <action
+            android:id="@+id/action_OTPFragment2_to_userDetail"
+            app:destination="@id/userDetail" />
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
@@ -31,4 +34,9 @@
             android:id="@+id/action_loginFragment2_to_OTPFragment2"
             app:destination="@id/OTPFragment2" />
     </fragment>
+    <fragment
+        android:id="@+id/userDetail"
+        android:name="com.example.myapplication.UserDetail"
+        android:label="fragment_user_detail"
+        tools:layout="@layout/fragment_user_detail" />
 </navigation>

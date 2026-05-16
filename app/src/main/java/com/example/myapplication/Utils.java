@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class Utils {
     public static final Utils INSTANCE = new Utils();
@@ -8,10 +9,14 @@ public class Utils {
     
     private FirebaseAuth firebaseAuthInstance = null;
 
-    public FirebaseAuth getFirebaseAuthInstance() {
+    FirebaseAuth getFirebaseAuthInstance() {
         if (firebaseAuthInstance == null) {
             firebaseAuthInstance = FirebaseAuth.getInstance();
         }
         return firebaseAuthInstance;
     }
+    String getUserID(){
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+
 }

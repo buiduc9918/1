@@ -26,43 +26,48 @@ public class AuthViewModel extends ViewModel {
 
     public static final AuthViewModel INSTANCE = new AuthViewModel();
 
-    public MutableLiveData<Boolean> getisSignin() {
+    MutableLiveData<Boolean> getisSignin() {
         return _isSignin;
     }
 
-    public MutableLiveData<String> getVerificationId() {
+    MutableLiveData<String> getVerificationId() {
         return _verification;
     }
-    public MutableLiveData<Boolean> getOtpSent() {
+    MutableLiveData<Boolean> getOtpSent() {
         return _otpSent;
     }
     void signInWithPhoneAuthCredential(String code,Activity activity) {
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(getVerificationId().getValue().toString(),code );
-        Utils.INSTANCE.getFirebaseAuthInstance().signInWithCredential(credential)
-                .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            _isSignin.setValue(true);
+        if(getVerificationId() != null){
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(getVerificationId().getValue().toString(),code );
+            Utils.INSTANCE.getFirebaseAuthInstance().signInWithCredential(credential)
+                    .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                _isSignin.setValue(true);
+                            } else {
+                                _isSignin.setValue(false);
+                            }
                         }
-                    }
-                });
+                    });
+        }
+
     }
     void sendOTP(String phoneNumber, Activity activity){
         PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             @Override
-            public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
+            public void onVerificationCompleted(PhoneAuthCredential credential) {
 
             }
             @Override
-            public void onVerificationFailed(@NonNull FirebaseException e) {
+            public void onVerificationFailed(FirebaseException e) {
 
             }
 
             @Override
-            public void onCodeSent(@NonNull String verificationId,
-                                   @NonNull PhoneAuthProvider.ForceResendingToken token) {
+            public void onCodeSent(String verificationId,
+                                   PhoneAuthProvider.ForceResendingToken token) {
                 _verification.setValue(verificationId);
                 _otpSent.setValue(true);
             }
