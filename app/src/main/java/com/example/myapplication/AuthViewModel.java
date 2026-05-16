@@ -2,7 +2,6 @@ package com.example.myapplication;
 
 import android.app.Activity;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 

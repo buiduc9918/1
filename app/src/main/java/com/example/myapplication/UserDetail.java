@@ -21,10 +21,7 @@ public class UserDetail extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentUserDetailBinding.inflate(inflater, container, false);
-
         getDetail();
-
-
         return  binding.getRoot();
     }
 
@@ -34,11 +31,6 @@ public class UserDetail extends Fragment {
         });
         Bundle bundle = getArguments();
         usernumber = bundle.getString("so").toString();
-        // nhan bien Number tu otpfrangment qua agruments; luu y key minh luu trong bundle.
-
         userID = Utils.INSTANCE.getUserID();
-
-
-
 }
 }

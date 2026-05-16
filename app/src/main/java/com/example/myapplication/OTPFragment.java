@@ -2,7 +2,6 @@ package com.example.myapplication;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.myapplication.databinding.FragmentOTPBinding;
-// bun chua du lieu dau vao xuyen suot SDT voi key la so
 public class OTPFragment extends Fragment {
     public OTPFragment() {
     }
@@ -27,43 +25,38 @@ public class OTPFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
     }
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         blinding = FragmentOTPBinding.inflate(inflater, container, false);
         getUserNumber();
-        // Inflate the layout for this fragment
         Toast.makeText(requireContext(),"gui OTP....",Toast.LENGTH_SHORT).show();
         sendOTP();
         onLoginButtonClicked();
         onBackPress();
         return blinding.getRoot();
     }
-
     private void onBackPress() {
         blinding.toolbar.setNavigationOnClickListener(v -> {
             NavHostFragment.findNavController(OTPFragment.this).navigate(R.id.action_OTPFragment2_to_loginFragment2);
                 }
         );
     }
-
     private void onLoginButtonClicked() {
         blinding.btnTieptuc.setOnClickListener(v -> {
             String OTP = blinding.otpNumber.getEditText().getText().toString();
-           goiham(OTP);
+                if(OTP.length()==6){
+                    Toast.makeText(requireContext(),"Dang kiem tra OTP ",Toast.LENGTH_SHORT).show();
+                    verifyOTP(OTP);
+                }else {
+                    Toast.makeText(requireContext(),"OTP  loi ",Toast.LENGTH_SHORT).show();
+                }
+
         });
 
     }
-void goiham(String OTP){
-    if(OTP.length()==6){
-        Toast.makeText(requireContext(),"Dang kiem tra OTP ",Toast.LENGTH_SHORT).show();
-        verifyOTP(OTP);
-    }else {
-        Toast.makeText(requireContext(),"OTP  loi ",Toast.LENGTH_SHORT).show();
-    }
-}
+
     private void verifyOTP(String otp) {
         viewModel.signInWithPhoneAuthCredential(otp,requireActivity());
-
         viewModel.getisSignin().observe(getViewLifecycleOwner(),V->{
                     if(V){
                         Toast.makeText(requireContext(),"Login Success",Toast.LENGTH_SHORT).show();
