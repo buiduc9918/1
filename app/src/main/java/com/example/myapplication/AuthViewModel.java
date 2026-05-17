@@ -33,8 +33,9 @@ public class AuthViewModel extends ViewModel {
     }
 
     void signInWithPhoneAuthCredential(String code, Activity activity) {
-        if(_verification != null){
-            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(_verification.getValue().toString(),code );
+        String verificationId = _verification.getValue();
+        if (verificationId != null && code != null) {
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
             Utils.INSTANCE.getFirebaseAuthInstance().signInWithCredential(credential)
                     .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -46,9 +47,9 @@ public class AuthViewModel extends ViewModel {
                             }
                         }
                     });
-
+        } else {
+            _isSignin.setValue(false);
         }
-
     }
     void sendOTP(String phoneNumber, Activity activity){
         PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {

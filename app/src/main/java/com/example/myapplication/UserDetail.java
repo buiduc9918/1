@@ -15,8 +15,6 @@ public class UserDetail extends Fragment {
     public String username = "";
     public String  usernumber = "";
     public String userID = "";
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -24,13 +22,19 @@ public class UserDetail extends Fragment {
         getDetail();
         return  binding.getRoot();
     }
-
     private void getDetail() {
-        binding.btnDuyet.setOnClickListener(v->{
-            username = binding.userIdname.getEditText().toString();
+        binding.btnDuyet.setOnClickListener(v -> {
+            if (binding.userIdname.getEditText() != null) {
+                username = binding.userIdname.getEditText().getText().toString();
+            }
         });
         Bundle bundle = getArguments();
-        usernumber = bundle.getString("so").toString();
+        if (bundle != null) {
+            String so = bundle.getString("so");
+            if (so != null) {
+                usernumber = so;
+            }
+        }
         userID = Utils.INSTANCE.getUserID();
-}
+    }
 }

@@ -15,8 +15,12 @@ public class Utils {
         }
         return firebaseAuthInstance;
     }
-    String getUserID(){
-        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    String getUserID() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            return user.getUid();
+        }
+        return "";
     }
 
 }

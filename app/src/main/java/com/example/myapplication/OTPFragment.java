@@ -58,7 +58,6 @@ public class OTPFragment extends Fragment {
     private void verifyOTP(String otp) {
         viewModel.signInWithPhoneAuthCredential(otp,requireActivity());
         viewModel.get_isSignin().observe(getViewLifecycleOwner(),V->{
-
                     if(V){
                         Toast.makeText(requireContext(),"Login Success",Toast.LENGTH_SHORT).show();
                         blinding.toolbar.setVisibility(View.INVISIBLE);
@@ -75,7 +74,6 @@ public class OTPFragment extends Fragment {
     private void getUserNumber() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            // Gán giá trị vào biến 'number' của lớp để dùng trong hàm sendOTP()
             number = bundle.getString("so");
             if (number != null) {
                 blinding.viewNumber.setText(number);
@@ -86,7 +84,7 @@ public class OTPFragment extends Fragment {
         blinding.toolbar.setVisibility(View.VISIBLE);
         viewModel.sendOTP(number, requireActivity());
         viewModel.get_otpSent().observe(getViewLifecycleOwner(),isSent->{
-            if(isSent==false){
+            if(isSent){
                 Toast.makeText(requireContext(),"Otp da gui thanh cong",Toast.LENGTH_SHORT).show();
                 blinding.toolbar.setVisibility(View.INVISIBLE);
             } else {

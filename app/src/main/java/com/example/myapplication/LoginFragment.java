@@ -20,22 +20,14 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Sử dụng ViewBinding để inflate layout
         binding = FragmentLoginBinding.inflate(inflater, container, false);
-
-        // Khai báo sự kiện setOnClickListener cho button "Tiếp"
         binding.btnDangnhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Lấy text từ EditText bên trong TextInputLayout
                 String number = binding.userNumber.getEditText().getText().toString();
-                
-                // Kiểm tra số điện thoại (Ví dụ: phải đúng 10 số)
                 if (number.length() != 10) {
                     Toast.makeText(requireContext(), "Vui lòng nhập đúng số điện thoại", Toast.LENGTH_SHORT).show();
                 } else {
-                    // bien bundle la bien trung chuyen cac  gia tri  cac chuyen tab trung gian
-                    // Bundle = cái hộp chứa dữ liệu key-value
                     Bundle bundle = new Bundle();
                     bundle.putString("so", "+84" + number);
                     Navigation.findNavController(v).navigate(R.id.action_loginFragment2_to_OTPFragment2, bundle);

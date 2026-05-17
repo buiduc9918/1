@@ -19,7 +19,7 @@ public SplashFragment() {
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater,
-          ViewGroup container, // container id man hinh hien thi
+          ViewGroup container,
              Bundle savedInstanceState
     ) {
         binding = FragmentSplashBinding.inflate(inflater, container, false);
