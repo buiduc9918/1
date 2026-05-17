@@ -30,9 +30,9 @@ public class OTPFragment extends Fragment {
         blinding = FragmentOTPBinding.inflate(inflater, container, false);
         getUserNumber();
         Toast.makeText(requireContext(),"gui OTP....",Toast.LENGTH_SHORT).show();
+        onBackPress();
         sendOTP();
         onLoginButtonClicked();
-        onBackPress();
         return blinding.getRoot();
     }
     private void onBackPress() {
@@ -46,7 +46,7 @@ public class OTPFragment extends Fragment {
             String OTP = blinding.otpNumber.getEditText().getText().toString();
                 if(OTP.length()==6){
                     Toast.makeText(requireContext(),"Dang kiem tra OTP ",Toast.LENGTH_SHORT).show();
-                    verifyOTP(OTP);
+                   verifyOTP(OTP);
                 }else {
                     Toast.makeText(requireContext(),"OTP  loi ",Toast.LENGTH_SHORT).show();
                 }
@@ -57,7 +57,8 @@ public class OTPFragment extends Fragment {
 
     private void verifyOTP(String otp) {
         viewModel.signInWithPhoneAuthCredential(otp,requireActivity());
-        viewModel.getisSignin().observe(getViewLifecycleOwner(),V->{
+        viewModel.get_isSignin().observe(getViewLifecycleOwner(),V->{
+
                     if(V){
                         Toast.makeText(requireContext(),"Login Success",Toast.LENGTH_SHORT).show();
                         blinding.toolbar.setVisibility(View.INVISIBLE);
@@ -84,13 +85,12 @@ public class OTPFragment extends Fragment {
     private void sendOTP() {
         blinding.toolbar.setVisibility(View.VISIBLE);
         viewModel.sendOTP(number, requireActivity());
-        viewModel.getOtpSent().observe(getViewLifecycleOwner(),isSent->{
-            if(isSent){
+        viewModel.get_otpSent().observe(getViewLifecycleOwner(),isSent->{
+            if(isSent==false){
                 Toast.makeText(requireContext(),"Otp da gui thanh cong",Toast.LENGTH_SHORT).show();
                 blinding.toolbar.setVisibility(View.INVISIBLE);
             } else {
                 Toast.makeText(requireContext(),"Otp da gui khong thanh cong",Toast.LENGTH_SHORT).show();
-
             }
         });
 

@@ -21,23 +21,20 @@ public class AuthViewModel extends ViewModel {
 
     private MutableLiveData<String> _verification = new MutableLiveData<>(null);
     private MutableLiveData<Boolean> _otpSent = new MutableLiveData<>(false);
+
+    public MutableLiveData<Boolean> get_otpSent() {
+        return _otpSent;
+    }
+
     private MutableLiveData<Boolean> _isSignin =  new MutableLiveData<>(false);
 
-    public static final AuthViewModel INSTANCE = new AuthViewModel();
-
-    MutableLiveData<Boolean> getisSignin() {
+    public MutableLiveData<Boolean> get_isSignin() {
         return _isSignin;
     }
 
-    MutableLiveData<String> getVerificationId() {
-        return _verification;
-    }
-    MutableLiveData<Boolean> getOtpSent() {
-        return _otpSent;
-    }
-    void signInWithPhoneAuthCredential(String code,Activity activity) {
-        if(getVerificationId() != null){
-            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(getVerificationId().getValue().toString(),code );
+    void signInWithPhoneAuthCredential(String code, Activity activity) {
+        if(_verification != null){
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(_verification.getValue().toString(),code );
             Utils.INSTANCE.getFirebaseAuthInstance().signInWithCredential(credential)
                     .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -49,29 +46,29 @@ public class AuthViewModel extends ViewModel {
                             }
                         }
                     });
+
         }
 
     }
     void sendOTP(String phoneNumber, Activity activity){
         PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
-            @Override
-            public void onVerificationCompleted(PhoneAuthCredential credential) {
-
-            }
-            @Override
-            public void onVerificationFailed(FirebaseException e) {
-
-            }
-
             @Override
             public void onCodeSent(String verificationId,
                                    PhoneAuthProvider.ForceResendingToken token) {
                 _verification.setValue(verificationId);
                 _otpSent.setValue(true);
             }
-        };
 
+            @Override
+            public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+                
+            }
+
+            @Override
+            public void onVerificationFailed(FirebaseException e) {
+
+            }
+        };
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(Utils.INSTANCE.getFirebaseAuthInstance())
                         .setPhoneNumber("+84" + phoneNumber)       // Phone number to verify
@@ -81,5 +78,6 @@ public class AuthViewModel extends ViewModel {
                         .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
     }
+
 }
 
