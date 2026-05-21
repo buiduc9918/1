@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.Frangment;
 
 import android.os.Bundle;
 
@@ -11,7 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.myapplication.databinding.FragmentLoginBinding;
+import com.example.myapplication.models.sharesimple.AuthViewModel;
+import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentSingUpBinding;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -40,9 +41,12 @@ public class SingUpFragment extends Fragment {
                 viewModel.signUpWithEmail(email, pass, requireActivity(),mAuth);
             }
         });
+        binding.btnVeDangnhap.setOnClickListener(v -> {
+            Toast.makeText(requireContext(), "Chuyển về đăng nhập", Toast.LENGTH_SHORT).show();
+            Navigation.findNavController(v).navigate(R.id.action_singUpFragment_to_loginFragment2);
+        });
         viewModel.getIsSignin().observe(getViewLifecycleOwner(), isSignedIn -> {
             if (isSignedIn) {
-                Toast.makeText(requireContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                 Toast.makeText(requireContext(), "Đang chuyển hướng đến phần đăng nhập vui lòng đăng nhập lại tài khoản mình vừa đăng kí", Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(binding.getRoot()).navigate(R.id.action_singUpFragment_to_loginFragment2);
             }

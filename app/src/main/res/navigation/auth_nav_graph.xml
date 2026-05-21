@@ -4,39 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/auth_nav_graph"
     app:startDestination="@id/splashFragment">
-    <fragment
-        android:id="@+id/OTPFragment2"
-        android:name="com.example.myapplication.OTPFragment"
-        android:label="fragment_o_t_p"
-        tools:layout="@layout/fragment_o_t_p" >
-        <action
-            android:id="@+id/action_OTPFragment2_to_loginFragment2"
-            app:destination="@id/loginFragment2" />
-        <action
-            android:id="@+id/action_OTPFragment2_to_userDetail"
-            app:destination="@id/userDetail" />
-    </fragment>
+
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.myapplication.SplashFragment"
+        android:name="com.example.myapplication.Frangment.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash">
         <action
             android:id="@+id/action_splashFragment_to_loginFragment2"
             app:destination="@id/loginFragment2" />
     </fragment>
+
     <fragment
         android:id="@+id/loginFragment2"
-        android:name="com.example.myapplication.LoginFragment"
+        android:name="com.example.myapplication.Frangment.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_loginFragment2_to_OTPFragment2"
-            app:destination="@id/OTPFragment2" />
+            android:id="@+id/action_loginFragment2_to_userDetail"
+            app:destination="@id/userDetail" />
+        <action
+            android:id="@+id/action_loginFragment2_to_singUpFragment"
+            app:destination="@id/singUpFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/userDetail"
-        android:name="com.example.myapplication.UserDetail"
+        android:name="com.example.myapplication.Frangment.UserDetail"
         android:label="fragment_user_detail"
         tools:layout="@layout/fragment_user_detail" />
+    <fragment
+        android:id="@+id/singUpFragment"
+        android:name="com.example.myapplication.Frangment.SingUpFragment"
+        android:label="fragment_sing_up"
+        tools:layout="@layout/fragment_sing_up" >
+        <action
+            android:id="@+id/action_singUpFragment_to_loginFragment2"
+            app:destination="@id/loginFragment2" />
+    </fragment>
 </navigation>

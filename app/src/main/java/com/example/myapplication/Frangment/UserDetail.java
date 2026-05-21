@@ -1,17 +1,21 @@
-package com.example.myapplication;
+package com.example.myapplication.Frangment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.myapplication.Utils;
 import com.example.myapplication.databinding.FragmentUserDetailBinding;
+import com.example.myapplication.models.sharesimple.Users;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class UserDetail extends Fragment {
     private FragmentUserDetailBinding binding;
@@ -23,19 +27,48 @@ public class UserDetail extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentUserDetailBinding.inflate(inflater, container, false);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            userMail = user.getEmail();
-            userID = user.getUid();
-        }
+        
         getDetail();
+        
         return binding.getRoot();
     }
 
     private void getDetail() {
+        userID = Utils.INSTANCE.getUserID();
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String email = bundle.getString("email");
+            if (email != null) {
+                userMail = email;
+            }
+        }
         binding.btnDuyet.setOnClickListener(v -> {
             if (binding.userIdname.getEditText() != null) {
-                username = binding.userIdname.getEditText().getText().toString();
+                username = binding.userIdname.getEditText().getText().toString().trim();
+                if (username.isEmpty()) {
+                    binding.userIdname.setError("User name cannot be empty");
+                    return;
+                }
+                Users userObj = new Users();
+                userObj.setUid(userID);
+                userObj.setUserName(username);
+                userObj.setEmail(userMail);
+                FirebaseDatabase.getInstance().getReference("AllUsers")
+                        .child("Users").child(userID).setValue(userObj)
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(requireContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                            try {
+                                // Chỉ dùng một Intent đúng tới MainActivity nằm trong package Activity
+                                Intent intent = new Intent(requireContext(), Class.forName("com.example.myapplication.Activity.MainActivity"));
+                                startActivity(intent);
+                                requireActivity().finishAffinity(); // Đóng toàn bộ luồng Login/UserDetail
+                            } catch (ClassNotFoundException e) {
+                                Toast.makeText(requireContext(), "Lưu thành công! Vui lòng tạo MainActivity để tiếp tục.", Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(requireContext(), "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        });
             }
         });
     }

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".UserDetail">
+    tools:context=".Frangment.UserDetail">
 
 
     <LinearLayout
@@ -60,7 +60,7 @@
             android:text="Duyet"
             android:textColor="@color/white"
             android:textSize="20dp"
-            android:inputType="number"
+            android:inputType="text"
             android:backgroundTint="@color/teal_200"
             android:layout_marginHorizontal="20dp"
             app:cornerRadius="17dp"/>

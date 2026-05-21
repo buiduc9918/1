@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.Frangment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.example.myapplication.models.sharesimple.AuthViewModel;
+import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentLoginBinding;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -44,14 +46,16 @@ public class LoginFragment extends Fragment {
             }
         });
         binding.btnDangky.setOnClickListener(v -> {
-            Toast.makeText(requireContext(), "Chuyển sang đăng ký", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Chuyển sang đăng kí", Toast.LENGTH_SHORT).show();
             Navigation.findNavController(v).navigate(R.id.action_loginFragment2_to_singUpFragment);
         });
 
         viewModel.getIsSignin().observe(getViewLifecycleOwner(), isSignedIn -> {
             if (isSignedIn) {
+                Bundle luu = new Bundle();
+                luu.putString("email",binding.userEmail.getEditText().getText().toString().trim());
                 Toast.makeText(requireContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_loginFragment2_to_userDetail);
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_loginFragment2_to_userDetail,luu);
             }
         });
 
