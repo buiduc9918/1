@@ -1,89 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/system_neutral1_0"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    android:background="@color/white"
     tools:context=".Frangment.SingUpFragment">
 
-
-    <com.google.android.material.textfield.MaterialAutoCompleteTextView
-        android:id="@+id/btn_veDangnhap"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="25dp"
-        android:layout_margin="17dp"
-        android:background="@android:color/holo_blue_light"
-        android:drawableLeft="@drawable/outline_arrow_back_24"
-        android:text="Về màn hình đăng nhập" />
     <LinearLayout
         android:id="@+id/screen2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:orientation="vertical">
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_veDangnhap"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:text="Quay lại"
+            app:icon="@drawable/outline_arrow_back_24"
+            app:iconPadding="8dp" />
+
         <ImageView
-            android:layout_width="150dp"
-            android:layout_height="159dp"
-            android:src="@drawable/outline_account_box_24" />
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/outline_account_box_24"
+            app:tint="@color/purple_200" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Đăng kí vào ứng dụng"
-            android:layout_marginBottom="20dp"
-            android:textSize="22dp" />
+            android:layout_marginTop="24dp"
+            android:text="Tạo tài khoản mới"
+            android:textColor="@color/black"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Bắt đầu kết nối với bạn bè ngay hôm nay"
+            android:textColor="@color/black"
+            android:alpha="0.6"
+            android:textSize="16sp" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/user_emaildk"
-            style="@style/Widget.Material3.TextInputLayout.FilledBox"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="17dp"
-            android:layout_marginVertical="17dp"
-            app:boxCornerRadiusBottomEnd="17dp"
-            app:boxCornerRadiusBottomStart="17dp"
-            app:boxCornerRadiusTopEnd="17dp"
-            app:boxCornerRadiusTopStart="17dp">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:hint="Email"
+            app:startIconDrawable="@android:drawable/ic_dialog_email">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:drawableStart="@drawable/outline_account_box_24"
-                android:hint="Email"
-                android:textSize="20dp" />
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/user_passdk"
-            style="@style/Widget.Material3.TextInputLayout.FilledBox"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="17dp"
-            android:layout_marginVertical="17dp"
-            app:boxCornerRadiusBottomEnd="17dp"
-            app:boxCornerRadiusBottomStart="17dp"
-            app:boxCornerRadiusTopEnd="17dp"
-            app:boxCornerRadiusTopStart="17dp">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Mật khẩu"
+            app:passwordToggleEnabled="true"
+            app:startIconDrawable="@android:drawable/ic_lock_idle_lock">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:drawableStart="@drawable/outline_account_box_24"
-                android:hint="Pass"
-                android:textSize="20dp" />
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_dangky"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="DANG KY"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            android:inputType="text"
-            android:backgroundTint="@color/teal_200"
-            android:layout_marginHorizontal="20dp"
-            app:cornerRadius="17dp"/>
+            android:layout_height="56dp"
+            android:layout_marginTop="32dp"
+            android:text="ĐĂNG KÝ"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:backgroundTint="@color/purple_200"/>
 
     </LinearLayout>
 
-
-</FrameLayout>
+</ScrollView>

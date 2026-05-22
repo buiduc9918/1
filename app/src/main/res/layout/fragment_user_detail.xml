@@ -1,70 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    android:background="@color/white"
     tools:context=".Frangment.UserDetail">
-
 
     <LinearLayout
         android:id="@+id/screenUserName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
 
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:orientation="vertical">
         <ImageView
-            android:layout_width="150dp"
-            android:layout_height="159dp"
-            android:src="@drawable/outline_account_box_24" />
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="48dp"
+            android:src="@drawable/outline_account_box_24"
+            app:tint="@color/purple_200" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chao mung vao share simple"
-            android:layout_marginBottom="20dp"
-
-            android:textSize="22dp" />
+            android:layout_marginTop="24dp"
+            android:text="Thông tin cá nhân"
+            android:textColor="@color/black"
+            android:textSize="28sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nhap ten cua ban"
-            android:textSize="20dp" />
+            android:layout_marginTop="8dp"
+            android:text="Hãy cho mọi người biết tên của bạn"
+            android:textColor="@color/black"
+            android:alpha="0.6"
+            android:textSize="16sp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/user_idname"
-            style="@style/Widget.Material3.TextInputLayout.FilledBox"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="17dp"
-            android:layout_marginVertical="17dp"
-            app:boxCornerRadiusBottomEnd="17dp"
-            app:boxCornerRadiusBottomStart="17dp"
-            app:boxCornerRadiusTopEnd="17dp"
-            app:boxCornerRadiusTopStart="17dp">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:hint="Tên hiển thị"
+            app:startIconDrawable="@drawable/outline_account_box_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:drawableStart="@drawable/outline_account_box_24"
-                android:hint="Nhap ten"
-                android:textSize="20dp" />
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_duyet"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Duyet"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            android:inputType="text"
-            android:backgroundTint="@color/teal_200"
-            android:layout_marginHorizontal="20dp"
-            app:cornerRadius="17dp"/>
+            android:layout_height="56dp"
+            android:layout_marginTop="32dp"
+            android:text="HOÀN TẤT"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:backgroundTint="@color/purple_200"/>
 
     </LinearLayout>
 
-</FrameLayout>
+</ScrollView>
