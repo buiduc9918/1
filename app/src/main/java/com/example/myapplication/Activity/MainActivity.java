@@ -64,14 +64,6 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-        binding.toolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.search) {
-                Toast.makeText(this, "Tính năng tìm kiếm đang phát triển", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-            return false;
-        });
-
         // 3. Thiết lập Toolbar làm ActionBar của hệ thống
         setSupportActionBar(binding.toolbar);
         if (getSupportActionBar() != null) {
@@ -96,5 +88,14 @@ public class MainActivity extends AppCompatActivity {
         // Nạp menu tìm kiếm vào Toolbar
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.search) {
+            startActivity(new android.content.Intent(this, SearchUserActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
