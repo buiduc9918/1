@@ -43,16 +43,25 @@ public class UserDetail extends Fragment {
             }
         }
         binding.btnDuyet.setOnClickListener(v -> {
-            if (binding.userIdname.getEditText() != null) {
+            if (binding.userIdname.getEditText() != null && binding.userPhone.getEditText() != null) {
                 username = binding.userIdname.getEditText().getText().toString().trim();
+                String phone = binding.userPhone.getEditText().getText().toString().trim();
+
                 if (username.isEmpty()) {
-                    binding.userIdname.setError("User name cannot be empty");
+                    binding.userIdname.setError("Tên không được để trống");
                     return;
                 }
+                if (phone.isEmpty()) {
+                    binding.userPhone.setError("Số điện thoại không được để trống");
+                    return;
+                }
+
                 Users userObj = new Users();
                 userObj.setUid(userID);
                 userObj.setUserName(username);
                 userObj.setEmail(userMail);
+                userObj.setPhoneNumber(phone);
+
                 FirebaseDatabase.getInstance().getReference("AllUsers")
                         .child("Users").child(userID).setValue(userObj)
                         .addOnSuccessListener(aVoid -> {

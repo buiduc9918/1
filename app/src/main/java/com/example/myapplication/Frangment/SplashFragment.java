@@ -14,8 +14,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.myapplication.R;
+import com.example.myapplication.Utils;
 import com.example.myapplication.databinding.FragmentSplashBinding;
 import com.example.myapplication.models.sharesimple.AuthViewModel;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SplashFragment extends Fragment {
     private FragmentSplashBinding binding;
@@ -32,25 +37,61 @@ public class SplashFragment extends Fragment {
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             Boolean isLogged = viewModel.getIsCurrentUser().getValue();
-            
+
             if (isLogged != null && isLogged) {
-                // Nếu đã đăng nhập, vào thẳng MainActivity
-                try {
-                    Intent intent = new Intent(requireContext(), Class.forName("com.example.myapplication.Activity.MainActivity"));
-                    startActivity(intent);
-                    requireActivity().finish();
-                } catch (ClassNotFoundException e) {
-                    // Nếu chưa có MainActivity, tạm thời về Login để không bị kẹt
-                    NavHostFragment.findNavController(SplashFragment.this)
-                            .navigate(R.id.action_splashFragment_to_loginFragment2);
-                }
+                checkUserDetail();
             } else {
-                // Nếu chưa đăng nhập, chuyển sang màn hình Login
-                NavHostFragment.findNavController(SplashFragment.this)
-                        .navigate(R.id.action_splashFragment_to_loginFragment2);
+                navigateToLogin();
             }
-        }, 2500);
+        }, 2000);
 
         return binding.getRoot();
+    }
+
+    private void checkUserDetail() {
+        String userID = Utils.INSTANCE.getUserID();
+        if (userID.isEmpty()) {
+            navigateToLogin();
+            return;
+        }
+
+        FirebaseDatabase.getInstance().getReference("AllUsers")
+                .child("Users").child(userID)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists() && snapshot.child("userName").exists()) {
+                            // User has completed details, go to MainActivity
+                            navigateToMain();
+                        } else {
+                            // User is logged in but hasn't set details, go to UserDetail
+                            // We go to LoginFragment first, and it will handle the flow or 
+                            // you can navigate directly to UserDetail if you have the email
+                            navigateToLogin(); 
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        navigateToLogin();
+                    }
+                });
+    }
+
+    private void navigateToMain() {
+        try {
+            Intent intent = new Intent(requireContext(), Class.forName("com.example.myapplication.Activity.MainActivity"));
+            startActivity(intent);
+            requireActivity().finish();
+        } catch (ClassNotFoundException e) {
+            navigateToLogin();
+        }
+    }
+
+    private void navigateToLogin() {
+        if (isAdded()) {
+            NavHostFragment.findNavController(SplashFragment.this)
+                    .navigate(R.id.action_splashFragment_to_loginFragment2);
+        }
     }
 }

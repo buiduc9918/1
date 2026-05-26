@@ -52,14 +52,44 @@ public class LoginFragment extends Fragment {
 
         viewModel.getIsSignin().observe(getViewLifecycleOwner(), isSignedIn -> {
             if (isSignedIn) {
-                Bundle luu = new Bundle();
-                luu.putString("email",binding.userEmail.getEditText().getText().toString().trim());
-                Toast.makeText(requireContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_loginFragment2_to_userDetail,luu);
+                String email = binding.userEmail.getEditText().getText().toString().trim();
+                checkUserDetailAndNavigate(email);
             }
         });
 
         return binding.getRoot();
+    }
+
+    private void checkUserDetailAndNavigate(String email) {
+        String userID = com.example.myapplication.Utils.INSTANCE.getUserID();
+        com.google.firebase.database.FirebaseDatabase.getInstance().getReference("AllUsers")
+                .child("Users").child(userID)
+                .addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot snapshot) {
+                        if (snapshot.exists() && snapshot.child("userName").exists()) {
+                            // User completed details, go to MainActivity
+                            try {
+                                android.content.Intent intent = new android.content.Intent(requireContext(), Class.forName("com.example.myapplication.Activity.MainActivity"));
+                                startActivity(intent);
+                                requireActivity().finish();
+                            } catch (ClassNotFoundException e) {
+                                Toast.makeText(requireContext(), "Lỗi: Không tìm thấy MainActivity", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            // First time login or details missing, go to UserDetail
+                            Bundle luu = new Bundle();
+                            luu.putString("email", email);
+                            Toast.makeText(requireContext(), "Vui lòng hoàn tất thông tin", Toast.LENGTH_SHORT).show();
+                            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_loginFragment2_to_userDetail, luu);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull com.google.firebase.database.DatabaseError error) {
+                        Toast.makeText(requireContext(), "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 
