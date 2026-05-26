@@ -13,11 +13,17 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.myapplication.R;
+import com.example.myapplication.adaptes.SearchUserAdapter;
 import com.example.myapplication.databinding.ActivitySearchUserBinding;
+import com.example.myapplication.models.sharesimple.Users;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 public class SearchUserActivity extends AppCompatActivity {
 
     public ActivitySearchUserBinding binding;
+    private SearchUserAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +75,50 @@ public class SearchUserActivity extends AppCompatActivity {
         if (email.isEmpty() && phone.isEmpty() && name.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập thông tin tìm kiếm", Toast.LENGTH_SHORT).show();
         } else {
-            // Logic tìm kiếm sẽ được thêm ở đây
-            String query = !name.isEmpty() ? name : (!email.isEmpty() ? email : phone);
-            Toast.makeText(this, "Đang tìm kiếm: " + query, Toast.LENGTH_SHORT).show();
+            // Xác định tiêu chí tìm kiếm (ưu tiên Tên, rồi đến Email, rồi đến SDT)
+            if (!name.isEmpty()) {
+                setupSearchRecyclerView("userName", name);
+            } else if (!email.isEmpty()) {
+                setupSearchRecyclerView("email", email);
+            } else {
+                setupSearchRecyclerView("phoneNumber", phone);
+            }
+        }
+    }
+
+    private void setupSearchRecyclerView(String field, String searchText) {
+        Query query = FirebaseDatabase.getInstance().getReference("AllUsers")
+                .child("Users")
+                .orderByChild(field)
+                .startAt(searchText)
+                .endAt(searchText + "\uf8ff");
+
+        FirebaseRecyclerOptions<Users> options = new FirebaseRecyclerOptions.Builder<Users>()
+                .setQuery(query, Users.class)
+                .build();
+
+        if (adapter != null) {
+            adapter.stopListening();
+        }
+
+        adapter = new SearchUserAdapter(options);
+        binding.searchResultsRv.setAdapter(adapter);
+        adapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (adapter != null) {
+            adapter.stopListening();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (adapter != null) {
+            adapter.startListening();
         }
     }
 }

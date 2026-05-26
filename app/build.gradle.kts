@@ -72,5 +72,5 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.test.manifest)
     debugImplementation(libs.ui.tooling)
-
+    implementation("com.firebaseui:firebase-ui-database:10.0.0-beta02")
 }

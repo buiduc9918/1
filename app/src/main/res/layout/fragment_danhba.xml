@@ -29,6 +29,6 @@
         android:layout_height="match_parent"
         android:layout_below="@id/searchLayout"
         android:layout_marginTop="8dp"
-        tools:listitem="@android:layout/simple_list_item_1" />
+        tools:listitem="@layout/viewholder_user" />
 
 </RelativeLayout>
