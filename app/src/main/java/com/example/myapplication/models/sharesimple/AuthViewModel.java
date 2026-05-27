@@ -60,7 +60,13 @@ public class AuthViewModel extends ViewModel {
                         _isCurrentUser.setValue(true);
                     } else {
                         _isSignin.setValue(false);
-                        Toast.makeText(activity, "Lỗi đăng ký: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        String errorMsg = "Lỗi đăng ký";
+                        if (task.getException() instanceof com.google.firebase.auth.FirebaseAuthUserCollisionException) {
+                            errorMsg = "Email này đã được sử dụng. Vui lòng sử dụng email khác.";
+                        } else if (task.getException() != null) {
+                            errorMsg = "Lỗi đăng ký: " + task.getException().getMessage();
+                        }
+                        Toast.makeText(activity, errorMsg, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

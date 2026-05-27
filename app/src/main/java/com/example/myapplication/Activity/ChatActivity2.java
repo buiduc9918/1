@@ -9,10 +9,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myapplication.databinding.ActivityChat2Binding;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class ChatActivity2 extends AppCompatActivity {
 
     private ActivityChat2Binding binding;
+
+    String chatRoomID = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +31,38 @@ public class ChatActivity2 extends AppCompatActivity {
             return insets;
         });
         setuptoolbar();
+        creatGetChatRoom();
+        binding.btnSend.setOnClickListener(v -> {
+            String message = binding.editMessage.getText().toString().trim();
+            if (message.isEmpty()) {
+                binding.editMessage.setError("Enter a message before sending");
+            } else {
+                sendMessage(message);
+                binding.editMessage.setText("");
+            }
+        });
+    }
 
+    private void sendMessage(String message) {
+        String myId = com.example.myapplication.Utils.INSTANCE.getUserID();
+        if (chatRoomID.isEmpty() || myId.isEmpty()) return;
 
+        com.google.firebase.database.DatabaseReference chatRoomRef = com.google.firebase.database.FirebaseDatabase.getInstance()
+                .getReference("ChatRoom").child(chatRoomID);
+
+        // Update last message time and sender only
+        chatRoomRef.child("lastMessageTimestamp").setValue(System.currentTimeMillis());
+        chatRoomRef.child("lastMessageSenderId").setValue(myId);
+        chatRoomRef.child("lastMessage").setValue(message);
+
+        // Create and send new message
+        com.example.myapplication.models.sharesimple.ChatMessageModel messageModel = 
+            new com.example.myapplication.models.sharesimple.ChatMessageModel(message, myId, System.currentTimeMillis());
+
+        chatRoomRef.child("messages").push().setValue(messageModel);
+
+        // Clear input field
+        binding.editMessage.setText("");
     }
     void  setuptoolbar(){
         // Xử lý nút quay lại trên toolbar
@@ -41,5 +74,48 @@ public class ChatActivity2 extends AppCompatActivity {
             binding.toolbar.setTitle(userName);
         }
     }
+    void creatGetChatRoom() {
+        String myId = com.example.myapplication.Utils.INSTANCE.getUserID();
+        String receiverId = getIntent().getStringExtra("userId");
+
+        if (receiverId != null && !myId.isEmpty()) {
+            chatRoomID = getChatRoomId(myId, receiverId);
+
+            com.google.firebase.database.DatabaseReference chatRoomRef = com.google.firebase.database.FirebaseDatabase.getInstance()
+                    .getReference("ChatRoom").child(chatRoomID);
+
+            chatRoomRef.get().addOnSuccessListener(snapshot -> {
+                if (!snapshot.exists()) {
+                    createNewChatRoom(chatRoomRef, myId, receiverId);
+                }
+            }).addOnFailureListener(e -> {
+                // Nếu lỗi khi lấy dữ liệu, thử tạo mới phòng chat như yêu cầu
+                createNewChatRoom(chatRoomRef, myId, receiverId);
+            });
+        }
+    }
+
+    private void createNewChatRoom(com.google.firebase.database.DatabaseReference chatRoomRef, String myId, String receiverId) {
+        java.util.ArrayList<String> userIds = new java.util.ArrayList<>();
+        userIds.add(myId);
+        userIds.add(receiverId);
+
+        com.example.myapplication.models.sharesimple.ChatRoomModel chatRoom = new com.example.myapplication.models.sharesimple.ChatRoomModel();
+        chatRoom.setChatRoomId(chatRoomID);
+        chatRoom.setUserIds(userIds);
+        chatRoom.setLastMessageTimestamp(System.currentTimeMillis());
+        chatRoom.setLastMessage("");
+
+        chatRoomRef.setValue(chatRoom);
+    }
+    private String getChatRoomId(String u1, String u2) {
+        if (u1.hashCode() < u2.hashCode()) {
+            return u1 + "_" + u2;
+        } else {
+            return u2 + "_" + u1;
+        }
+    }
+
+
 
 }

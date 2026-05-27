@@ -24,16 +24,31 @@ public class SearchUserAdapter extends FirebaseRecyclerAdapter<Users, SearchUser
 
     @Override
     protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull Users model) {
-        holder.userName.setText(model.getUserName());
-        holder.userEmail.setText(model.getEmail());
-        holder.userNumber.setText(model.getPhoneNumber());
-        holder.itemView.setOnClickListener(v -> {
-            // Navigate to ChatActivity2
-            Intent intent = new Intent(v.getContext(), ChatActivity2.class);
-            intent.putExtra("userId", model.getUid());
-            intent.putExtra("userName", model.getUserName());
-            v.getContext().startActivity(intent);
-        });
+        String currentUserId = com.example.myapplication.Utils.INSTANCE.getUserID();
+
+        if (model.getUid() != null && model.getUid().equals(currentUserId)) {
+            // Ẩn chính mình khỏi danh sách kết quả
+            holder.itemView.setVisibility(View.GONE);
+            holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+        } else {
+            // Hiển thị người dùng khác bình thường
+            holder.itemView.setVisibility(View.VISIBLE);
+            holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, 
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            holder.userName.setText(model.getUserName());
+            holder.userEmail.setText(model.getEmail());
+            holder.userNumber.setText(model.getPhoneNumber());
+            
+            holder.itemView.setOnClickListener(v -> {
+                // Chuyển sang màn hình chat
+                Intent intent = new Intent(v.getContext(), ChatActivity2.class);
+                intent.putExtra("userId", model.getUid());
+                intent.putExtra("userName", model.getUserName());
+                v.getContext().startActivity(intent);
+            });
+        }
     }
 
     @NonNull

@@ -65,6 +65,8 @@
                 android:maxLines="4"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="#757575"
                 android:textSize="16sp"
                 android:autofillHints="none" />
         </com.google.android.material.card.MaterialCardView>
