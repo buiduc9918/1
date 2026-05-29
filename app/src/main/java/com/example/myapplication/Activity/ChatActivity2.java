@@ -7,8 +7,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.google.firebase.database.Query;
+import com.example.myapplication.adaptes.MessageAdapter;
 import com.example.myapplication.databinding.ActivityChat2Binding;
+import com.example.myapplication.models.sharesimple.ChatMessageModel;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class ChatActivity2 extends AppCompatActivity {
@@ -16,6 +21,43 @@ public class ChatActivity2 extends AppCompatActivity {
     private ActivityChat2Binding binding;
 
     String chatRoomID = "";
+    private MessageAdapter adapter;
+
+    private void setupRecyclerView() {
+        if (chatRoomID.isEmpty()) return;
+
+        com.google.firebase.database.Query query = FirebaseDatabase.getInstance()
+                .getReference("ChatRoom").child(chatRoomID).child("messages");
+
+        FirebaseRecyclerOptions<ChatMessageModel> options =
+                new FirebaseRecyclerOptions.Builder<ChatMessageModel>()
+                        .setQuery(query, ChatMessageModel.class)
+                        .build();
+
+        adapter = new MessageAdapter(options);
+        binding.chatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.chatRecyclerView.setAdapter(adapter);
+
+        // Tự động cuộn xuống khi có tin nhắn mới
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                binding.chatRecyclerView.smoothScrollToPosition(adapter.getItemCount());
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (adapter != null) adapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (adapter != null) adapter.stopListening();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +83,7 @@ public class ChatActivity2 extends AppCompatActivity {
                 binding.editMessage.setText("");
             }
         });
+        setupRecyclerView();
     }
 
     private void sendMessage(String message) {
