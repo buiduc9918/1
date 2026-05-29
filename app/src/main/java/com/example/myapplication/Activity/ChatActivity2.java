@@ -9,54 +9,31 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.firebase.database.Query;
-import com.example.myapplication.adaptes.MessageAdapter;
+
+import com.example.myapplication.adaptes.ChatAdapter;
 import com.example.myapplication.databinding.ActivityChat2Binding;
 import com.example.myapplication.models.sharesimple.ChatMessageModel;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 public class ChatActivity2 extends AppCompatActivity {
 
     private ActivityChat2Binding binding;
 
     String chatRoomID = "";
-    private MessageAdapter adapter;
-
-    private void setupRecyclerView() {
-        if (chatRoomID.isEmpty()) return;
-
-        com.google.firebase.database.Query query = FirebaseDatabase.getInstance()
-                .getReference("ChatRoom").child(chatRoomID).child("messages");
-
-        FirebaseRecyclerOptions<ChatMessageModel> options =
-                new FirebaseRecyclerOptions.Builder<ChatMessageModel>()
-                        .setQuery(query, ChatMessageModel.class)
-                        .build();
-
-        adapter = new MessageAdapter(options);
-        binding.chatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        binding.chatRecyclerView.setAdapter(adapter);
-
-        // Tự động cuộn xuống khi có tin nhắn mới
-        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onItemRangeInserted(int positionStart, int itemCount) {
-                binding.chatRecyclerView.smoothScrollToPosition(adapter.getItemCount());
-            }
-        });
-    }
+    private ChatAdapter chatAdapter;
 
     @Override
     protected void onStart() {
         super.onStart();
-        if (adapter != null) adapter.startListening();
+        if (chatAdapter != null) chatAdapter.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (adapter != null) adapter.stopListening();
+        if (chatAdapter != null) chatAdapter.stopListening();
     }
 
     @Override
@@ -83,7 +60,28 @@ public class ChatActivity2 extends AppCompatActivity {
                 binding.editMessage.setText("");
             }
         });
-        setupRecyclerView();
+        setupMessageAdapter();
+    }
+
+    private void setupMessageAdapter() {
+        if (chatRoomID.isEmpty()) return;
+
+        Query query = FirebaseDatabase.getInstance().getReference("ChatRoom")
+                .child(chatRoomID).child("messages")
+                .orderByChild("timestamp");
+
+        FirebaseRecyclerOptions<ChatMessageModel> options = new FirebaseRecyclerOptions.Builder<ChatMessageModel>()
+                .setQuery(query, ChatMessageModel.class)
+                .build();
+
+        chatAdapter = new ChatAdapter(options);
+        
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);
+        binding.chatRecyclerView.setLayoutManager(layoutManager);
+
+        binding.chatRecyclerView.setAdapter(chatAdapter);
+        chatAdapter.startListening();
     }
 
     private void sendMessage(String message) {
